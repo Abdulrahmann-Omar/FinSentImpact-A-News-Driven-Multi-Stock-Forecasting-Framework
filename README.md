@@ -1,7 +1,3 @@
-Here is a **professional and comprehensive README** for your project that aligns with the instructor's requirements and adds polish for academic or real-world use:
-
----
-
 # FinSentImpact: A News-Driven Multi-Stock Forecasting Framework
 
 ## 📊 Overview
