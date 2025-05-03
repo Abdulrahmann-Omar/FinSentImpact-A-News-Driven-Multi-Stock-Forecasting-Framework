@@ -1,16 +1,95 @@
-# FinSentImpact-A-News-Driven-Multi-Stock-Forecasting-Framework
-FinSentImpact is a data-driven forecasting framework that integrates historical stock price data and financial news indicators to analyze and predict next-day stock movements across multiple companies. The project leverages advanced feature engineering, time series visualization, exploratory data analysis, and class imbalance handling to uncover the correlation between news sentiment and price volatility. Using predictive modeling techniques (such as Random Forest and SHAP interpretability), the project aims to develop explainable models that can forecast future stock performance (Open, Close, High, Low, Volume, and Adjusted Close) by learning from both market behavior and news triggers.
+Here is a **professional and comprehensive README** for your project that aligns with the instructor's requirements and adds polish for academic or real-world use:
 
-## Key components include:
+---
 
-  Automated data pipeline from 47 publicly traded stocks
-  
-  Feature shifts to model next-day predictions
-  
-  News event tagging and impact visualization
-  
-  Rolling statistics, KDE, outlier detection, and PCA clustering
-  
-  SMOTE-based balancing for news event classification
-  
-  Model-ready dataset with engineered candle shape and volatility features
+# FinSentImpact: A News-Driven Multi-Stock Forecasting Framework
+
+## 📊 Overview
+
+**FinSentImpact** is a multi-model machine learning framework designed to forecast stock prices for multiple companies by integrating historical financial data with sentiment analysis from financial news. This project aims to provide more accurate stock predictions by capturing both numerical trends and qualitative market signals.
+
+The framework supports:
+
+* Multi-output regression (predicting multiple future stock metrics)
+* Integration of news sentiment scores
+* Multiple model implementations ( XGBoost, Random Forest, SVR )
+* Model explainability via SHAP, PDP, ICE, and LIME
+
+---
+
+## 🧠 Team Members and Assigned Models
+
+| Name                 | Model Implemented | 
+| -------------------- | ----------------- | 
+| Abdulrahman Omar     | XGBoost Regressor | 
+| Abdulrahman Elattar  | Random Forest     | 
+| Retal Ali            | SVM Regressor     | 
+
+> ℹ️ Each notebook is self-contained and includes full model implementation, evaluation, and 4+ explainability techniques.
+
+
+---
+
+## 🧪 How to Run
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/Abdulrahmann-Omar/FinSentImpact-A-News-Driven-Multi-Stock-Forecasting-Framework.git
+cd FinSentImpact-A-News-Driven-Multi-Stock-Forecasting-Framework
+```
+
+### 2. Create Virtual Environment or you can use Colab
+
+```bash
+python3 -m venv venv
+source venv\Scripts\activate  
+```
+
+### 3. Open Notebooks
+
+Launch Jupyter or Colab and open any notebook you need.
+
+---
+
+## 🧠 Machine Learning Models
+
+* 📈 **XGBoost**: Gradient boosting with SHAP & PDP for explainability.
+* 🌲 **Random Forest**: Ensemble model for robustness.
+* 📉 **Support Vector Regressor (SVR)**: For nonlinear regression using RBF kernel.
+
+Each model targets forecasting the following outputs:
+
+* `Volume_tomorrow`, `Open_tomorrow`, `High_tomorrow`
+* `Low_tomorrow`, `Close_tomorrow`, `Adj close_tomorrow`
+
+---
+
+## 🔍 Explainability Techniques
+
+| Technique | Description                                      |
+| --------- | ------------------------------------------------ |
+| SHAP      | Global and local feature importance              |
+| LIME      | Local surrogate models for instance explanations |
+| PDP       | Shows marginal effect of a feature               |
+| ICE       | Displays variation across individual predictions |
+
+Each notebook includes at least four interpretability techniques as required.
+
+---
+
+## 📊 Evaluation Metrics
+
+* **RMSE**: Root Mean Squared Error for prediction accuracy
+* **R² Score**: Goodness of fit metric
+* **Visualizations**: SHAP summary plots, ICE plots, and feature importance bar charts
+
+---
+
+## ⚙️ Feature Engineering
+
+* Ratios: `high_to_low`, `close_to_open`, `volume_per_price`
+* Sentiment: News sentiment scores aggregated per date
+* Log-transformed volumes for normalization
+* Scaled features using `StandardScaler`
+
