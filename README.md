@@ -29,35 +29,33 @@ Integrating and preparing the FNSPID dataset presented several challenges. Below
 
 ### 1. Data Integration
 
-** Challenge **: The FNSPID dataset separates stock price data (in multiple CSV files within full_history.zip) and news sentiment data (in nasdaq_exteral_data.csv). Concatenating these files directly would misalign data due to differing structures and frequencies, leading to inaccurate predictions.
+**Challenge**: The FNSPID dataset separates stock price data (in multiple CSV files within full_history.zip) and news sentiment data (in nasdaq_exteral_data.csv). Concatenating these files directly would misalign data due to differing structures and frequencies, leading to inaccurate predictions.
 
-** Solution **: We merged the stock price and news data using Pandas’ merge function, joining on the 'date' and 'ticker' columns. A left join ensured all stock price records were retained, even for days without news. This approach aligned each stock’s price data with its corresponding sentiment scores.
+**Solution**: We merged the stock price and news data using Pandas’ merge function, joining on the 'date' and 'ticker' columns. A left join ensured all stock price records were retained, even for days without news. This approach aligned each stock’s price data with its corresponding sentiment scores.
 
 
 ### 2. Defining the Target Variable
 
-** Challenge **: Setting "tomorrow" as the target (e.g., next day’s closing price) required identifying the next trading day, as stock markets are closed on weekends and holidays. Incorrectly using calendar days could introduce errors in the time series.
+**Challenge**: Setting "tomorrow" as the target (e.g., next day’s closing price) required identifying the next trading day, as stock markets are closed on weekends and holidays. Incorrectly using calendar days could introduce errors in the time series.
 
-** Solution **: We used the pandas_market_calendars library to filter data to valid NYSE trading days and set the target as the next trading day’s closing price, grouped by ticker to maintain stock-specific sequences.
+**Solution**: We used the pandas_market_calendars library to filter data to valid NYSE trading days and set the target as the next trading day’s closing price, grouped by ticker to maintain stock-specific sequences.
 
 
 ### 3. Feature Engineering
 
-** Challenge **: Creating meaningful features from raw data while avoiding look-ahead bias was critical. Using future data in features (e.g., tomorrow’s sentiment) would make predictions unrealistic.
+**Challenge**: Creating meaningful features from raw data while avoiding look-ahead bias was critical. Using future data in features (e.g., tomorrow’s sentiment) would make predictions unrealistic.
 
-** Solution **: We engineered features like high-to-low ratio, close-to-open ratio, and aggregated sentiment scores per date and ticker, using only past and present data. Sentiment scores were averaged for days with multiple news articles to capture overall sentiment.
+**Solution**: We engineered features like high-to-low ratio, close-to-open ratio, and aggregated sentiment scores per date and ticker, using only past and present data. Sentiment scores were averaged for days with multiple news articles to capture overall sentiment.
 
 
 ### 4. Handling Missing Values
 
-** Challenge **: Missing sentiment scores for days without news could disrupt model training if not addressed properly.
+**Challenge**: Missing sentiment scores for days without news could disrupt model training if not addressed properly.
 
-** Solution **: We applied forward-filling to impute missing sentiment scores, assuming sentiment persists until new information is available. For other missing values, we evaluated context-specific imputation or removed incomplete records to maintain data quality.
+**Solution**: We applied forward-filling to impute missing sentiment scores, assuming sentiment persists until new information is available. For other missing values, we evaluated context-specific imputation or removed incomplete records to maintain data quality.
 
 
-## Why Our Solutions Matter
 
-By addressing these challenges, we built a robust data foundation for FinSentImpact. Proper data integration ensured that news sentiment accurately complemented stock price data. Correctly defining the target variable aligned our predictions with real-world trading scenarios. Careful feature engineering and handling of missing values prevented biases, enabling our models to learn meaningful patterns. These efforts contributed to achieving high accuracy, as evidenced by low RMSE and high R² scores in our model evaluations.
 ---
 
 ## 🧪 How to Run
