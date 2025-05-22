@@ -33,14 +33,6 @@ Integrating and preparing the FNSPID dataset presented several challenges. Below
 
 ** Solution **: We merged the stock price and news data using Pandas’ merge function, joining on the 'date' and 'ticker' columns. A left join ensured all stock price records were retained, even for days without news. This approach aligned each stock’s price data with its corresponding sentiment scores.
 
-import pandas as pd
-
-# Load stock price and news data
-stock_data = pd.read_csv("stock_prices.csv")  # After concatenating individual stock files
-news_data = pd.read_csv("nasdaq_exteral_data.csv")
-
-# Merge on date and ticker
-merged_data = pd.merge(stock_data, news_data, on=["date", "ticker"], how="left")
 
 ### 2. Defining the Target Variable
 
@@ -48,16 +40,6 @@ merged_data = pd.merge(stock_data, news_data, on=["date", "ticker"], how="left")
 
 ** Solution **: We used the pandas_market_calendars library to filter data to valid NYSE trading days and set the target as the next trading day’s closing price, grouped by ticker to maintain stock-specific sequences.
 
-from pandas_market_calendars import get_calendar
-
-nyse = get_calendar("NYSE")
-trading_days = nyse.valid_days(start_date=merged_data["date"].min(), end_date=merged_data["date"].max())
-
-# Filter data to trading days
-merged_data = merged_data[merged_data["date"].isin(trading_days)]
-
-# Set target as next day's close price
-merged_data["target"] = merged_data.groupby("ticker")["close"].shift(-1)
 
 ### 3. Feature Engineering
 
@@ -65,15 +47,6 @@ merged_data["target"] = merged_data.groupby("ticker")["close"].shift(-1)
 
 ** Solution **: We engineered features like high-to-low ratio, close-to-open ratio, and aggregated sentiment scores per date and ticker, using only past and present data. Sentiment scores were averaged for days with multiple news articles to capture overall sentiment.
 
-# Aggregate sentiment scores
-merged_data["sentiment_agg"] = merged_data.groupby(["date", "ticker"])["sentiment_score"].transform("mean")
-
-# Compute ratios
-merged_data["high_to_low"] = merged_data["high"] / merged_data["low"]
-merged_data["close_to_open"] = merged_data["close"] / merged_data["open"]
-
-# Log-transform volume
-merged_data["volume_log"] = np.log1p(merged_data["volume"])
 
 ### 4. Handling Missing Values
 
@@ -81,10 +54,8 @@ merged_data["volume_log"] = np.log1p(merged_data["volume"])
 
 ** Solution **: We applied forward-filling to impute missing sentiment scores, assuming sentiment persists until new information is available. For other missing values, we evaluated context-specific imputation or removed incomplete records to maintain data quality.
 
-# Forward-fill missing sentiment scores
-merged_data["sentiment_score"].fillna(method="ffill", inplace=True)
 
-##Why Our Solutions Matter
+## Why Our Solutions Matter
 
 By addressing these challenges, we built a robust data foundation for FinSentImpact. Proper data integration ensured that news sentiment accurately complemented stock price data. Correctly defining the target variable aligned our predictions with real-world trading scenarios. Careful feature engineering and handling of missing values prevented biases, enabling our models to learn meaningful patterns. These efforts contributed to achieving high accuracy, as evidenced by low RMSE and high R² scores in our model evaluations.
 ---
